@@ -1,11 +1,12 @@
 ﻿using apiToDo.DTO;
+using apiToDo.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace apiToDo.Models
 {
-    public class Tarefas
+    public class Tarefas : ITarefaService
     {
         private static readonly List<TarefaDTO> lstTarefas = new List<TarefaDTO>()
         {
@@ -27,7 +28,7 @@ namespace apiToDo.Models
         };
 
         // Método para listar todas as tarefas
-        public List<TarefaDTO> listAllTarefas()
+        public List<TarefaDTO> ListAllTarefas()
         {
             // retorna a lista de tarefas
             return lstTarefas.ToList();

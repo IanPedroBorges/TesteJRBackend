@@ -1,3 +1,5 @@
+using apiToDo.Models;
+using apiToDo.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +30,12 @@ namespace apiToDo
         {
 
             services.AddControllers();
+
+            // Injeção de Dependência
+
+            services.AddScoped<ITarefaService, Tarefas>();
+
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "apiToDo", Version = "v1" });

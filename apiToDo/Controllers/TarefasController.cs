@@ -1,5 +1,6 @@
 ﻿using apiToDo.DTO;
 using apiToDo.Models;
+using apiToDo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,7 +13,12 @@ namespace apiToDo.Controllers
     public class TarefasController : ControllerBase
     {
 
-        private readonly Tarefas _model = new Tarefas();
+        private readonly ITarefaService _service;
+
+        public TarefasController(ITarefaService service)
+        {
+            _service = service;
+        }
 
         [HttpGet]
         public ActionResult<List<TarefaDTO>> GetAllTarefas()
@@ -20,7 +26,7 @@ namespace apiToDo.Controllers
             try
             {
                 // Chama o método para listar todas as tarefas
-                var lstTarefas = _model.listAllTarefas();
+                var lstTarefas = _service.ListAllTarefas();
 
                 // Verifica se a lista está vazia se sim retorna um NoContent Vazio
                 if (lstTarefas.Count == 0)
@@ -43,7 +49,7 @@ namespace apiToDo.Controllers
             try
             {
                 // Chama o método para retornar uma tarefa pelo ID
-                var tarefa = _model.GetTarefa(id);
+                var tarefa = _service.GetTarefa(id);
 
                 // Retorna a tarefa encontrada
                 return Ok(tarefa);
@@ -68,7 +74,7 @@ namespace apiToDo.Controllers
             try
             {
                 // Chama o método para inserir uma nova tarefa
-                var tarefa = _model.InserirTarefa(Request);
+                var tarefa = _service.InserirTarefa(Request);
 
                 // Retorna a tarefa inserida
                 return Created("Tarefa Criada", tarefa);
@@ -94,7 +100,7 @@ namespace apiToDo.Controllers
             {
 
                 // Chama o método para deletar uma tarefa
-                var tarefa = _model.DeletarTarefa(id);
+                var tarefa = _service.DeletarTarefa(id);
 
                 // Retorna a lista de tarefas restantes
                 return Ok(tarefa);
