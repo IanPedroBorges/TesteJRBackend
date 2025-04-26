@@ -62,7 +62,7 @@ namespace apiToDo.Controllers
         }
 
         [Authorize]
-        [HttpPost("InserirTarefas")]
+        [HttpPost]
         public ActionResult<TarefaDTO> CreateNewTarefa([FromBody] TarefaDTO Request)
         {
             try
@@ -71,13 +71,13 @@ namespace apiToDo.Controllers
                 var tarefa = _model.InserirTarefa(Request);
 
                 // Retorna a tarefa inserida
-                return Ok(tarefa);
+                return Created("Tarefa Criada", tarefa);
             }
 
             catch (ArgumentNullException ex)
             {
                 // Retorna um erro 400 caso a tarefa já exista
-                return BadRequest(new { msg = ex.Message });
+                return Conflict(new { msg = ex.Message });
             }
             catch (Exception ex)
             {
@@ -87,7 +87,7 @@ namespace apiToDo.Controllers
         }
 
 
-        [HttpGet("DeletarTarefa/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult DeleteTask( int id)
         {
             try
