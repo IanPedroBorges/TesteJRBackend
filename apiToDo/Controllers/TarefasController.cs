@@ -67,7 +67,6 @@ namespace apiToDo.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public ActionResult<TarefaDTO> CreateNewTarefa([FromBody] TarefaDTO Request)
         {
