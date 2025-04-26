@@ -63,17 +63,26 @@ namespace apiToDo.Controllers
 
         [Authorize]
         [HttpPost("lstTarefas")]
-        public ActionResult lstTarefas()
+        public ActionResult<TarefaDTO> CreateNewTarefa([FromBody] TarefaDTO Request)
         {
             try
             {
-              
-                return StatusCode(200);
+                // Chama o método para inserir uma nova tarefa
+                var tarefa = _model.InserirTarefa(Request);
+
+                // Retorna a tarefa inserida
+                return Ok(tarefa);
             }
 
+            catch (ArgumentNullException ex)
+            {
+                // Retorna um erro 400 caso a tarefa já exista
+                return BadRequest(new { msg = ex.Message });
+            }
             catch (Exception ex)
             {
-                return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}"});
+                // Retorna um erro 400 com a mensagem de erro, uma simulação em caso de uma api da erro
+                return BadRequest(new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
             }
         }
 

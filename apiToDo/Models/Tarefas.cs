@@ -53,9 +53,29 @@ namespace apiToDo.Models
         }
 
 
-        public void InserirTarefa(TarefaDTO Request)
+        public TarefaDTO InserirTarefa(TarefaDTO Request)
         {
-            return;
+            // Verifica se a tarefa já existe
+            var tarefaExistente = lstTarefas.FirstOrDefault(t => t.ID_TAREFA == Request.ID_TAREFA);
+            if (tarefaExistente != null)
+            {
+                // Retorna um erro ArgumentNullException caso a tarefa já exista
+                throw new ArgumentNullException($"Tarefa com ID {Request.ID_TAREFA} já existe.");
+            }
+
+            // verificar a lista de tarefas e atribuir o ID_TAREFA
+            // Caso exista algo na lista, atribui o ID_TAREFA como o maior + 1
+            // Se a lista estiver vazia, atribui o ID_TAREFA como 1
+            int id = lstTarefas.Any() ? lstTarefas.Max(t => t.ID_TAREFA) + 1 : 1;
+
+            // Adiciona o id a nova tarefa
+            Request.ID_TAREFA = id;
+
+            // Adiciona a nova tarefa a lista
+            lstTarefas.Add(Request);
+
+            // Retorna a tarefa inserida
+            return Request;
         }
         public void DeletarTarefa(int ID_TAREFA)
         {
