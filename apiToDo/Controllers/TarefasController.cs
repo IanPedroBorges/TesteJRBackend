@@ -19,16 +19,44 @@ namespace apiToDo.Controllers
         {
             try
             {
+                // Chama o método para listar todas as tarefas
                 var lstTarefas = _model.listAllTarefas();
 
+                // Verifica se a lista está vazia se sim retorna um NoContent Vazio
                 if (lstTarefas.Count == 0)
                     return StatusCode(204, new { msg = "Nenhum registro encontrado" });
 
+                // Retorna a lista de tarefas
                 return Ok(lstTarefas);
             }
 
             catch (Exception ex)
             {
+                // Retorna um erro 400 com a mensagem de erro, uma simulação em caso de uma api da erro
+                return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
+            }
+        }
+
+        [HttpGet("GetTarefa")]
+        public ActionResult<TarefaDTO> GetTarefa([FromQuery] int ID_TAREFA)
+        {
+            try
+            {
+                // Chama o método para retornar uma tarefa pelo ID
+                var tarefa = _model.GetTarefa(ID_TAREFA);
+
+                // Retorna a tarefa encontrada
+                return Ok(tarefa);
+            }
+
+            catch (KeyNotFoundException ex)
+            {
+                // Retorna um erro 404 caso a tarefa não seja encontrada
+                return StatusCode(404, new { msg = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Retorna um erro 400 com a mensagem de erro, uma simulação em caso de uma api da erro
                 return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
             }
         }

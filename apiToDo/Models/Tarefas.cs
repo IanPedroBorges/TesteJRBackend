@@ -26,16 +26,36 @@ namespace apiToDo.Models
             }
         };
         
-
+        // Método para listar todas as tarefas
         public List<TarefaDTO> listAllTarefas()
         {
+            // retorna a lista de tarefas
             return lstTarefas.ToList();
+        }
+
+        // Metodo para retornar uma tarefa pelo ID
+
+        public TarefaDTO GetTarefa(int ID_TAREFA)
+        {
+            // busca a tarefa pelo ID
+            var tarefa = lstTarefas.FirstOrDefault(t => t.ID_TAREFA == ID_TAREFA);
+
+            // Verifica se a tarefa existe
+            if (tarefa == null)
+            {
+                // Retorna um erro KeyNotFoundException caso a tarefa não exista
+                throw new KeyNotFoundException($"Tarefa com ID {ID_TAREFA} não encontrada.");
+            }
+
+            // Retorna a tarefa encontrada
+            return tarefa;
+            
         }
 
 
         public void InserirTarefa(TarefaDTO Request)
         {
-                return;
+            return;
         }
         public void DeletarTarefa(int ID_TAREFA)
         {
