@@ -33,7 +33,7 @@ namespace apiToDo.Controllers
             catch (Exception ex)
             {
                 // Retorna um erro 400 com a mensagem de erro, uma simulação em caso de uma api da erro
-                return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
+                return BadRequest(new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
             }
         }
 
@@ -52,12 +52,12 @@ namespace apiToDo.Controllers
             catch (KeyNotFoundException ex)
             {
                 // Retorna um erro 404 caso a tarefa não seja encontrada
-                return StatusCode(404, new { msg = ex.Message });
+                return NotFound(new { msg = ex.Message });
             }
             catch (Exception ex)
             {
                 // Retorna um erro 400 com a mensagem de erro, uma simulação em caso de uma api da erro
-                return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
+                return BadRequest(new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
             }
         }
 
@@ -87,18 +87,29 @@ namespace apiToDo.Controllers
         }
 
 
-        [HttpGet("DeletarTarefa")]
-        public ActionResult DeleteTask([FromQuery] int ID_TAREFA)
+        [HttpGet("DeletarTarefa/{id}")]
+        public ActionResult DeleteTask( int id)
         {
             try
             {
 
-                return StatusCode(200);
+                // Chama o método para deletar uma tarefa
+                var tarefa = _model.DeletarTarefa(id);
+
+                // Retorna a lista de tarefas restantes
+                return Ok(tarefa);
+            }
+
+            catch (KeyNotFoundException ex)
+            {
+                // Retorna um erro 404 caso a tarefa não seja encontrada
+                return NotFound(new { msg = ex.Message });
             }
 
             catch (Exception ex)
             {
-                return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
+                // Retorna um erro 400 com a mensagem de erro, uma simulação em caso de uma api da erro
+                return BadRequest(new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
             }
         }
     }

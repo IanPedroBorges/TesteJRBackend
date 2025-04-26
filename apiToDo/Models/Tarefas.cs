@@ -25,7 +25,7 @@ namespace apiToDo.Models
                 DS_TAREFA = "Subir Projeto de Teste no GitHub"
             }
         };
-        
+
         // Método para listar todas as tarefas
         public List<TarefaDTO> listAllTarefas()
         {
@@ -49,7 +49,7 @@ namespace apiToDo.Models
 
             // Retorna a tarefa encontrada
             return tarefa;
-            
+
         }
 
 
@@ -77,9 +77,23 @@ namespace apiToDo.Models
             // Retorna a tarefa inserida
             return Request;
         }
-        public void DeletarTarefa(int ID_TAREFA)
+        public List<TarefaDTO> DeletarTarefa(int ID_TAREFA)
         {
-            return;
+            // Busca a tarefa pelo ID
+            var tarefa = lstTarefas.FirstOrDefault(t => t.ID_TAREFA == ID_TAREFA);
+
+            // Verifica se a tarefa existe
+            if (tarefa == null)
+            {
+                // Retorna um erro KeyNotFoundException caso a tarefa não exista
+                throw new KeyNotFoundException($"Tarefa com ID {ID_TAREFA} não encontrada.");
+            }
+            else
+            {
+                // Remove a tarefa da lista
+                lstTarefas.Remove(tarefa);
+                return lstTarefas;
+            }
         }
     }
 }
