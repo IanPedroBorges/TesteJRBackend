@@ -37,13 +37,13 @@ namespace apiToDo.Controllers
             }
         }
 
-        [HttpGet("GetTarefa")]
-        public ActionResult<TarefaDTO> GetTarefa([FromQuery] int ID_TAREFA)
+        [HttpGet("{id}")]
+        public ActionResult<TarefaDTO> GetTarefa(int id)
         {
             try
             {
                 // Chama o método para retornar uma tarefa pelo ID
-                var tarefa = _model.GetTarefa(ID_TAREFA);
+                var tarefa = _model.GetTarefa(id);
 
                 // Retorna a tarefa encontrada
                 return Ok(tarefa);
@@ -62,7 +62,7 @@ namespace apiToDo.Controllers
         }
 
         [Authorize]
-        [HttpPost("lstTarefas")]
+        [HttpPost("InserirTarefas")]
         public ActionResult<TarefaDTO> CreateNewTarefa([FromBody] TarefaDTO Request)
         {
             try
@@ -86,22 +86,6 @@ namespace apiToDo.Controllers
             }
         }
 
-        [HttpPost("InserirTarefas")]
-        public ActionResult InserirTarefas([FromBody] TarefaDTO Request)
-        {
-            try
-            {
-
-                return StatusCode(200);
-
-
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(400, new { msg = $"Ocorreu um erro em sua API {ex.Message}" });
-            }
-        }
 
         [HttpGet("DeletarTarefa")]
         public ActionResult DeleteTask([FromQuery] int ID_TAREFA)
